@@ -28,12 +28,8 @@ class HelloController {
     public function store()
     {
         echo 'hello store';
-        print_r($this->request->getJson());
-        print_r($this->request->getAllParams());
-        print_r($this->params);
-        print_r($this->request->getParam('name'));
-
-
+        print_r($this->request->getParams('defaultValue', 'name'));
+        print_r($this->request->getJson('defaultValue', 'name'));
     }
 
     public function show()
@@ -44,8 +40,8 @@ class HelloController {
     public function update()
     {
         echo 'hello update';
-        print_r($this->request->getJson());
-        print_r($this->request->getAllParams());
+        print_r($this->request->getParams('defaultValue', 'name'));
+        print_r($this->request->getJson('defaultValue', 'name'));
         print_r($this->params);
 
     }

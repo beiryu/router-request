@@ -10,21 +10,15 @@ class Router
 	 * @var action is the function is called in controller
 	 * @var request contains all params for all methods
 	 * @var params is params in uri. Ex. localhost/hello/{hello}/vietnam/{vietnam} 
+	 * @var code is code of url request	
 	 */
 	protected $namespaceController = "Fresher\\Source\\Controllers\\";
+	protected $namespaceRequest = "Fresher\\Core\\";
 	protected $controller = null;
 	protected $action = null;
 	protected $request = null;
 	protected $params = null;
-
-	/**
-	 * Construct the system routing
-	 */
-	public function __construct()
-	{
-		// initialize request object
-		$this->request = new Request();
-	}
+	protected $code = null;
 
 	/**
 	 * Execute the sys routing
@@ -47,15 +41,25 @@ class Router
 		}
 
 		// forward to properly route
-		$method = $this->request->getMethod(); 
+		$method = $_SERVER['REQUEST_METHOD']; 
 		if (isset($routes[$method][$uri]))
 		{
 			// parse name of controller
 			$name = $this->parseRoute($routes[$method][$uri]);
 			
+			// initializes the request
+			$requestName = $this->namespaceRequest . ucfirst(strtolower($method)) . 'Request';
+			$this->request = new $requestName();
+
 			// initializes the controller
 			$this->controller = $this->initializeController($name);
+			$this->code = '200';
 		}
+		else
+		{
+			$this->code = '404';
+		}
+		return $this->code;
 	}
 
 	/**
@@ -102,7 +106,6 @@ class Router
 	{
 		// initializes the controller
 		$controller = $this->namespaceController . ucfirst($name) . 'Controller';
-
 		// constructs the controller
 		return new $controller($this->request, $this->params, $this->action);
 	}

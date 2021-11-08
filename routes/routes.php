@@ -23,5 +23,10 @@ $routes = array(
 	'DELETE' => [
 		'/hello/{id}' => 'hello@destroy'
 
-	]
+	],
+);
+
+$code = array(
+	'404' => 'Not Found',
+	'200' => 'Success',
 );

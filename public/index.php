@@ -39,17 +39,17 @@ function autoLoader($className) {
 			require_once ROOT_PATH . '/source/controllers/' . $className . '.php';
 		}
 	}
-	else if (file_exists(CMS_PATH . $className . '.php')) {
-		require_once CMS_PATH . $className . '.php';
-	}
 }
 spl_autoload_register('autoLoader');
 
+
+require_once CMS_PATH . '/Request.php';
+require_once CMS_PATH . '/Router.php';
 
 
 
 
 $router = new Router();
-$router->execute($routes);
+$output = $router->execute($routes);
 $controller = $router->getController();
 $controller->execute();
